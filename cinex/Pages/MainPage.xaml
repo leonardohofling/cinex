@@ -1,0 +1,60 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ContentPage xmlns="http://xamarin.com/schemas/2014/forms" xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml" xmlns:local="clr-namespace:cinex" x:Class="cinex.Pages.MainPage" Title="{Binding Title}">
+    <StackLayout>
+        <SearchBar Text="{Binding SearchString}" SearchCommand="{Binding FilterUpcomingsCommand}" />
+        <ListView HasUnevenRows="True"
+                  IsRefreshing="{Binding IsLoading}" ItemsSource="{Binding Upcomings}" SelectedItem="{Binding SelectedItem, Mode=TwoWay}" 
+                  IsPullToRefreshEnabled="True" RefreshCommand="{Binding ListViewRefreshCommand}">
+
+            <ListView.ItemTemplate>
+                <DataTemplate>
+                    <ViewCell>
+                        <Grid Padding="10,20">
+                            <Grid.RowDefinitions>
+                                <RowDefinition Height="auto" />
+                                <RowDefinition Height="auto" />
+                                <RowDefinition Height="auto" />
+                            </Grid.RowDefinitions>
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="auto" />
+                                <ColumnDefinition Width="*" />
+                            </Grid.ColumnDefinitions>
+
+                            <Image HeightRequest="90" 
+                               WidthRequest = "90"
+                               Source="{Binding PosterPath_W200}"
+                               Grid.Row="0"
+                               Grid.Column="0"
+                               Grid.RowSpan ="3"/>
+
+                            <Label Grid.Row="0" 
+                               Grid.Column="1"
+                               Text="{Binding Title}"
+                               FontSize="Large"
+                               TextColor="#000000"/>
+
+                            <Label Grid.Row="1" 
+                               Grid.Column="1"
+                               Text="{Binding Genres}"
+                               FontSize="Small"
+                               TextColor="#000000"/>
+
+                            <Label Grid.Row="2" 
+                               Grid.Column="1"
+                               Text="{Binding ReleaseDate}"
+                               FontSize="Small"
+                               TextColor="#000000"/>
+                        </Grid>
+                    </ViewCell>
+                </DataTemplate>
+            </ListView.ItemTemplate>
+
+            <ListView.Footer>
+                <StackLayout>
+                    <Button Text="Load more..." Command="{Binding LoadMoreCommand}" IsVisible="{Binding ShowLoadMore}"/>
+                </StackLayout>
+            </ListView.Footer>
+
+        </ListView>
+    </StackLayout>
+</ContentPage>

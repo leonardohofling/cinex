@@ -1,0 +1,56 @@
+﻿<?xml version="1.0" encoding="UTF-8"?>
+<ContentPage xmlns="http://xamarin.com/schemas/2014/forms" 
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             x:Class="cinex.Pages.DetailsPage" Title="{Binding Title}">
+    <ContentPage.Content>
+        <StackLayout>
+            <Grid Padding="10,20">
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="auto" />
+                    <RowDefinition Height="auto" />
+                    <RowDefinition Height="auto" />
+                    <RowDefinition Height="auto" />
+                </Grid.RowDefinitions>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="auto" />
+                    <ColumnDefinition Width="*" />
+                </Grid.ColumnDefinitions>
+
+                <Image HeightRequest="90" 
+                               WidthRequest = "90"
+                               Source="{Binding PosterPath_W200}"
+                               Grid.Row="0"
+                               Grid.Column="0"
+                               Grid.RowSpan ="3"/>
+
+                <Label Grid.Row="0" 
+                               Grid.Column="1"
+                               Text="{Binding Title}"
+                               FontSize="Large"
+                               TextColor="#000000"/>
+
+                <Label Grid.Row="1" 
+                               Grid.Column="1"
+                               Text="{Binding Genres}"
+                               FontSize="Small"
+                               TextColor="#000000"/>
+
+                <Label Grid.Row="2" 
+                               Grid.Column="1"
+                               Text="{Binding ReleaseDate}"
+                               FontSize="Small"
+                               TextColor="#000000"/>
+
+                <StackLayout Grid.Row="3"
+                             Grid.Column="0"
+                             Grid.ColumnSpan="2"
+                             Padding="10,20">
+                    <Label 
+                        Text="{Binding Overview}"
+                        FontSize="Medium"
+                        TextColor="#000000"/>
+                </StackLayout>
+            </Grid>
+        </StackLayout>
+    </ContentPage.Content>
+</ContentPage>
