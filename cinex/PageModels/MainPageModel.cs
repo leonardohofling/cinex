@@ -1,4 +1,5 @@
 ﻿using cinex.Models;
+using cinex.Resources;
 using cinex.Services;
 using FreshMvvm;
 using System;
@@ -30,7 +31,7 @@ namespace cinex.PageModels
 
         public List<GenreModel> Genres { get; }
 
-        public bool ShowLoadMore { get; set; }
+        public bool CanLoadMore { get; set; } = false;
 
         private string _searchString;
         public string SearchString
@@ -38,13 +39,8 @@ namespace cinex.PageModels
             get => _searchString;
             set
             {
-                if (!EqualityComparer<string>.Default.Equals(_searchString, value))
-                {
-                    _searchString = value;
-                    FilterUpcomings();
-                }
-
-                ShowLoadMore = string.IsNullOrEmpty(_searchString);
+                _searchString = value;
+                FilterUpcomingsCommand?.Execute(null);
             }
         }
 
@@ -97,11 +93,20 @@ namespace cinex.PageModels
             {
                 return new Command(async () =>
                 {
-                    IsLoading = true;
+                    try
+                    {
+                        IsLoading = true;
 
-                    await LoadUpcomings();
-
-                    IsLoading = false;
+                        await LoadUpcomings();
+                    }
+                    catch (Exception e)
+                    {
+                        //TODO: Log Exception
+                    }
+                    finally
+                    {
+                        IsLoading = false;
+                    }
                 });
             }
         }
@@ -111,7 +116,14 @@ namespace cinex.PageModels
             {
                 return new Command(async (upcomingModel) =>
                 {
-                    await CoreMethods.PushPageModel<DetailsPageModel>(upcomingModel, false);
+                    try
+                    {
+                        await CoreMethods.PushPageModel<DetailsPageModel>(upcomingModel, false);
+                    }
+                    catch (Exception e)
+                    {
+                        //TODO: Log Exception
+                    }
                 });
             }
         }
@@ -133,11 +145,20 @@ namespace cinex.PageModels
             {
                 return new Command(async () =>
                 {
-                    IsLoading = true;
+                    try
+                    {
+                        IsLoading = true;
 
-                    await LoadUpcomings(true);
-
-                    IsLoading = false;
+                        await LoadUpcomings(true);                        
+                    }
+                    catch (Exception e)
+                    {
+                        //TODO: Log Exception
+                    }
+                    finally
+                    {
+                        IsLoading = false;
+                    }
                 });
             }
         }
@@ -154,7 +175,7 @@ namespace cinex.PageModels
             }
             catch (Exception e)
             {
-                throw;
+                await CoreMethods.DisplayAlert(AppConstants.ERROR, e.Message, AppConstants.CLOSE_BUTTON_TEXT);
             }
         }
 
@@ -162,6 +183,9 @@ namespace cinex.PageModels
         {
             try
             {
+                // Pause Infinite Scrolling
+                CanLoadMore = false;
+
                 if (clearOriginalUpcomings)
                 {
                     NextPage = 1;
@@ -182,12 +206,12 @@ namespace cinex.PageModels
                 TotalPages = upcomingResponseModel.TotalPages;
                 NextPage++;
 
-                ShowLoadMore = NextPage <= TotalPages;
-
+                // Enable Infinite Scrolling only when having new pages to load.
+                CanLoadMore = NextPage <= TotalPages;
             }
             catch (Exception e)
             {
-                throw;
+                await CoreMethods.DisplayAlert(AppConstants.ERROR, e.Message, AppConstants.CLOSE_BUTTON_TEXT);
             }
         }
 

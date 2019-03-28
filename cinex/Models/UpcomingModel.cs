@@ -1,4 +1,5 @@
-﻿using Newtonsoft.Json;
+﻿using cinex.Resources;
+using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
 
@@ -23,7 +24,7 @@ namespace cinex.Models
         [JsonProperty(PropertyName = "poster_path")]
         public string PosterPath { get; set; }
 
-        public string PosterPath_W200 => $"https://image.tmdb.org/t/p/w200/{PosterPath}";
+        public string PosterPath_W200 =>  string.Format(AppConstants.TMBD_IMAGE_URL, PosterPath);
 
         [JsonProperty(PropertyName = "original_language")]
         public string OriginalLanguage { get; set; }

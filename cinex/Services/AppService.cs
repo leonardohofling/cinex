@@ -1,4 +1,5 @@
 ﻿using cinex.Models;
+using cinex.Resources;
 using RestSharp;
 using System.Threading.Tasks;
 
@@ -6,9 +7,6 @@ namespace cinex.Services
 {
     public class AppService : IAppService
     {
-        private static string LANGUAGE = "en-US";
-        private static string API_KEY = "1f54bd990f1cdfb230adb312546d765d";
-
         public AppService()
         {
 
@@ -16,22 +14,28 @@ namespace cinex.Services
 
         public async Task<GenresResponseModel> GetGenresAsync()
         {
-            var client = new RestClient($"https://api.themoviedb.org/3/genre/movie/list?language={LANGUAGE}&api_key={API_KEY}");
+            var client = new RestClient(AppConstants.URL_GET_GENRES);
 
             var request = new RestRequest(Method.GET);
             var response = await client.ExecuteTaskAsync<GenresResponseModel>(request);
 
-            return response.Data;
+            if (response != null && response.IsSuccessful)
+                return response.Data;
+
+            throw new System.Exception(AppConstants.ERROR_LOADING_GENRES);
         }
 
         public async Task<UpcomingResponseModel> GetUpcomingAsync(int page)
         {
-            var client = new RestClient($"https://api.themoviedb.org/3/movie/upcoming?page={page}&language={LANGUAGE}&api_key={API_KEY}");
+            var client = new RestClient(string.Format(AppConstants.URL_GET_UPCOMINGS, page));
 
             var request = new RestRequest(Method.GET);
             var response = await client.ExecuteTaskAsync<UpcomingResponseModel>(request);
 
-            return response.Data;
+            if (response != null && response.IsSuccessful)
+                return response.Data;
+
+            throw new System.Exception(AppConstants.ERROR_LOADING_UPCOMINGS);
         }
     }
 }
