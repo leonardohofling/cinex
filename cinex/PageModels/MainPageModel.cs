@@ -33,6 +33,8 @@ namespace cinex.PageModels
 
         public bool CanLoadMore { get; set; } = false;
 
+        public bool IsLoadingMore { get; set; } = false;
+
         private string _searchString;
         public string SearchString
         {
@@ -95,7 +97,7 @@ namespace cinex.PageModels
                 {
                     try
                     {
-                        IsLoading = true;
+                        IsLoadingMore = true;
 
                         await LoadUpcomings();
                     }
@@ -105,7 +107,7 @@ namespace cinex.PageModels
                     }
                     finally
                     {
-                        IsLoading = false;
+                        IsLoadingMore = false;
                     }
                 });
             }

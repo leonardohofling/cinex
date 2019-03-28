@@ -60,7 +60,9 @@
 
             <ListView.Footer>
                 <StackLayout>
-                    
+                    <ActivityIndicator x:Name="actInd"
+                             IsRunning="{Binding IsLoadingMore}"
+                             IsVisible="{Binding IsLoadingMore}" Color="Blue"/>
                 </StackLayout>
             </ListView.Footer>
 
