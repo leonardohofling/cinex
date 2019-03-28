@@ -7,6 +7,8 @@ namespace cinex.Services
 {
     public class AppService : IAppService
     {
+        private JsonNetSerializer JsonNetSerializer = new JsonNetSerializer();
+
         public AppService()
         {
 
@@ -14,7 +16,8 @@ namespace cinex.Services
 
         public async Task<GenresResponseModel> GetGenresAsync()
         {
-            var client = new RestClient(AppConstants.URL_GET_GENRES);
+            var client = new RestClient(AppConstants.URL_GET_GENRES)
+                .UseSerializer(JsonNetSerializer);
 
             var request = new RestRequest(Method.GET);
             var response = await client.ExecuteTaskAsync<GenresResponseModel>(request);
@@ -27,7 +30,8 @@ namespace cinex.Services
 
         public async Task<UpcomingResponseModel> GetUpcomingAsync(int page)
         {
-            var client = new RestClient(string.Format(AppConstants.URL_GET_UPCOMINGS, page));
+            var client = new RestClient(string.Format(AppConstants.URL_GET_UPCOMINGS, page))
+                .UseSerializer(JsonNetSerializer);
 
             var request = new RestRequest(Method.GET);
             var response = await client.ExecuteTaskAsync<UpcomingResponseModel>(request);

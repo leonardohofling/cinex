@@ -1,6 +1,7 @@
 ﻿using cinex.PageModels;
 using cinex.Services;
 using FreshMvvm;
+using Newtonsoft.Json;
 using Xamarin.Forms;
 using Xamarin.Forms.Xaml;
 
