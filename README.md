@@ -1,5 +1,5 @@
 # CineX
-CineX is a Xamarin Forms application for cinephiles and movie hobbyists.
+CineX is a Xamarin Forms application for cinephiles and movie hobbyists. Enjoy!
 
 # New Features!
   - Upcomings list and details
